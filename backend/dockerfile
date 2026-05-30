@@ -1,0 +1,14 @@
+# Gunakan image Golang resmi sebagai builder
+FROM golang:1.25.5-alpine AS builder
+WORKDIR /app
+COPY . .
+RUN go build -o main .
+
+# Gunakan image minimalis untuk menjalankan biner
+FROM alpine:latest
+WORKDIR /app
+COPY --from=builder /app/main .
+
+# Ekspos port default backend
+EXPOSE 8080
+CMD ["./main"]
