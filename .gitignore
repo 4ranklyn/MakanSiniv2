@@ -1,0 +1,7 @@
+# Ignore frontend dependencies
+frontend/node_modules/
+frontend/dist/
+
+# Ignore local environment configs
+frontend/.env
+backend/makansini.db

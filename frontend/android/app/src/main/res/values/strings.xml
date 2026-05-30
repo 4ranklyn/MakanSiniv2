@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MakanSini</string>
+    <string name="title_activity_main">MakanSini</string>
+    <string name="package_name">com.makansini.app</string>
+    <string name="custom_url_scheme">com.makansini.app</string>
+</resources>
