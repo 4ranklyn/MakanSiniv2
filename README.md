@@ -20,7 +20,7 @@ MakanSini bypasses standard keyword-matching limitations by processing natural l
 * **Haversine Spacial Filtering:** Instantly eliminates out-of-bounds restaurant candidates on the server using great-circle distance mathematical verification.
 * **Semantic Reranking:** Leverages Gemini AI to dynamically assign conceptual relevance scores (0–10) checking how well a restaurant's menu matches the raw user mood.
 * **Composite Scoring Formula:** Sorts and serves the Top 10 cards using a weighted multi-factor calculation:
-  $$\text{Score} = (\text{Rating} \times 1.0) + (\text{ContextScore} \times 1.5) - (\text{Distance\_km} \times 0.4)$$
+  $$\text{Score} = (\text{Rating} \times 1.0) + (\text{ContextScore} \times 1.5) - (\text{Distance}_{\text{km}} \times 0.4)$$
 
 ### 2. Taste Timeline & AI Local Trends Engine
 * **Anonymous Community Posting:** Users can publish culinary experiences instantly under a self-selected pseudonym Local Handle without navigating heavy, conversion-killing sign-in walls.
