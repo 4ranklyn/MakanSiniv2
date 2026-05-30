@@ -1,13 +1,13 @@
 package main
 
 import (
-	"context"
-	"log"
 	"backend/config"
 	"backend/database"
 	"backend/handlers"
 	"backend/middleware"
 	"backend/services"
+	"context"
+	"log"
 	"net/http"
 )
 
@@ -43,8 +43,9 @@ func main() {
 	http.HandleFunc("/api/community/trends", middleware.EnableCORS(handlers.HandleCommunityTrends))
 
 	// 5. Start Server
+	// WAJIB menggunakan "0.0.0.0" agar router Cloud Run bisa menembus masuk ke dalam kontainer Go
 	log.Printf("Server listening on port %s...\n", config.AppConfig.Port)
-	if err := http.ListenAndServe(":"+config.AppConfig.Port, nil); err != nil {
+	if err := http.ListenAndServe("0.0.0.0:"+config.AppConfig.Port, nil); err != nil {
 		log.Fatalf("Fatal: Server failed to start: %v", err)
 	}
 }

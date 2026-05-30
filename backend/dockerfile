@@ -1,14 +1,37 @@
-# Gunakan image Golang resmi sebagai builder
+# Stage 1: Kompilasi biner
 FROM golang:1.25.5-alpine AS builder
-WORKDIR /app
-COPY . .
-RUN go build -o main .
 
-# Gunakan image minimalis untuk menjalankan biner
+# Update packages to patch OS vulnerabilities
+RUN apk update && apk upgrade --no-cache
+
+WORKDIR /app
+
+# Optimize build caching by copying dependency files first
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+# Tambahkan CGO_ENABLED=0 agar biner bersifat statis murni dan aman di Alpine
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o main .
+
+# Stage 2: Runner minimalis
 FROM alpine:latest
+
+# Update packages to patch OS vulnerabilities
+RUN apk update && apk upgrade --no-cache
+
+# Create a non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
 WORKDIR /app
 COPY --from=builder /app/main .
 
-# Ekspos port default backend
+# Give the non-root user write access to /app so SQLite can create/write the database file
+RUN chown -R appuser:appgroup /app
+
+# Run as non-root user
+USER appuser
+
 EXPOSE 8080
 CMD ["./main"]
