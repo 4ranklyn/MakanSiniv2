@@ -15,7 +15,7 @@ import { Star } from 'lucide-react';
  * - onDragEnd for swipe detection with threshold
  */
 
-const SWIPE_THRESHOLD = 100;
+const SWIPE_THRESHOLD = 80;
 const DRAG_CONSTRAINT = 0;
 
 const budgetLabels = {
@@ -29,9 +29,9 @@ export default function SwipeCard({ location, stackIndex, isTop, onSwipe }) {
 
   // Motion values
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 200], [-18, 18]);
-  const savorOpacity = useTransform(x, [0, SWIPE_THRESHOLD], [0, 1]);
-  const rejectOpacity = useTransform(x, [-SWIPE_THRESHOLD, 0], [1, 0]);
+  const rotate = useTransform(x, [-200, 200], [-12, 12]);
+  const savorOpacity = useTransform(x, [0, SWIPE_THRESHOLD], [0, 0.85]);
+  const rejectOpacity = useTransform(x, [-SWIPE_THRESHOLD, 0], [0.85, 0]);
 
   // Stack offset for cards behind
   const stackOffset = stackIndex * 8;
@@ -41,7 +41,7 @@ export default function SwipeCard({ location, stackIndex, isTop, onSwipe }) {
     const offsetX = info.offset.x;
     const velocityX = info.velocity.x;
 
-    if (Math.abs(offsetX) > SWIPE_THRESHOLD || Math.abs(velocityX) > 500) {
+    if (Math.abs(offsetX) > SWIPE_THRESHOLD || Math.abs(velocityX) > 400) {
       const direction = offsetX > 0 ? 'right' : 'left';
       onSwipe(direction);
     }
@@ -50,7 +50,6 @@ export default function SwipeCard({ location, stackIndex, isTop, onSwipe }) {
   return (
     <motion.div
       ref={cardRef}
-      layout
       style={{
         position: 'absolute',
         width: '100%',
@@ -62,25 +61,27 @@ export default function SwipeCard({ location, stackIndex, isTop, onSwipe }) {
         y: stackOffset,
         zIndex: 10 - stackIndex,
         cursor: isTop ? 'grab' : 'default',
+        willChange: 'transform, opacity',
       }}
       initial={{ scale: 0.8, opacity: 0, y: 60 }}
       animate={{
         scale: stackScale,
         opacity: 1,
         y: stackOffset,
-        transition: { type: 'spring', stiffness: 300, damping: 25 },
+        transition: { type: 'spring', stiffness: 500, damping: 36, mass: 0.7 },
       }}
       exit={{
-        x: x.get() > 0 ? 400 : -400,
+        x: x.get() > 0 ? 500 : -500,
         opacity: 0,
-        rotate: x.get() > 0 ? 20 : -20,
-        transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+        rotate: x.get() > 0 ? 12 : -12,
+        transition: { duration: 0.16, ease: 'easeOut' },
       }}
       drag={isTop ? 'x' : false}
       dragConstraints={{ left: DRAG_CONSTRAINT, right: DRAG_CONSTRAINT }}
-      dragElastic={0.9}
+      dragElastic={0.85}
+      dragTransition={{ bounceStiffness: 650, bounceDamping: 38 }}
       onDragEnd={isTop ? handleDragEnd : undefined}
-      whileDrag={{ cursor: 'grabbing', scale: 1.02 }}
+      whileDrag={{ cursor: 'grabbing' }}
     >
       <div
         className="card-surface"

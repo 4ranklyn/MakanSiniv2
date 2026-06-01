@@ -100,7 +100,7 @@ export default function SwipeArena({ locations, token, roomId, onComplete, onRoo
       if (nextIndex >= totalCards) {
         setTimeout(() => {
           onComplete(direction === 'right' ? newAccepted : accepted);
-        }, 400);
+        }, 300);
       }
     },
     [currentIndex, accepted, locations, totalCards, onComplete, token, roomId, onRoomMatch, i18n.language]

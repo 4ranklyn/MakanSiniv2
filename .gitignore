@@ -1,7 +1,37 @@
-# Ignore frontend dependencies
+# =========================================================================
+# CRUCIAL APP SECURE - DO NOT REMOVE
+# =========================================================================
+# Backend Secrets
+backend/.env
+backend/.env.*
+backend/secrets/
+*service-account*.json
+*.key.json
+
+# Frontend Secrets
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# =========================================================================
+# Dependencies & Build Outputs
+# =========================================================================
+# Go Backend
+backend/dist/
+backend/bin/
+backend/*.exe
+backend/*.test
+
+# Node/Vite Frontend
 frontend/node_modules/
 frontend/dist/
+frontend/build/
+frontend/.vite/
 
-# Ignore local environment configs
-frontend/.env
-backend/makansini.db
+# Capacitor Android/iOS builds (if generated inside root)
+frontend/android/
+frontend/ios/
